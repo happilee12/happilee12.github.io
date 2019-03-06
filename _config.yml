@@ -103,10 +103,22 @@ analytics:
     tracking_id          :
     anonymize_ip         : # true, false (default)
 
+#tag
+collections:
+  tags:
+    output: true
+    permalink: /tags/:path/
+    
+defaults:
+  - scope:
+      path: ''
+      type: tags
+    values:
+      layout: tag
 
 # Site Author
 author:
-  name             : "Your Name"
+  name             : "한리경"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "I am an amazing person."
   location         : "Somewhere"

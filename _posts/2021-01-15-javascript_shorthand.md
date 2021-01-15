@@ -6,7 +6,7 @@ categories: javascript translation
 
 
 > 이 포스트는 다음 포스트를 한글로 번역하여 작성하였습니다.
-원글 : https://medium.com/javascript-in-plain-english/20-javascript-shorthand-techniques-that-will-save-your-time-f1671aab405f
+원글 : [https://medium.com/javascript-in-plain-english/20-javascript-shorthand-techniques-that-will-save-your-time-f1671aab405f](https://medium.com/javascript-in-plain-english/20-javascript-shorthand-techniques-that-will-save-your-time-f1671aab405f)
 
 ### ⚡ 알게될 내용
 아래 코드를 이해하고 적절히 활용할 수 있다.  
@@ -20,8 +20,9 @@ const cloneObj = {...obj};`
 --------------------------------------
 </br>
 
-![1*zflDDaWxGKw2Drgi_hreKg](/assets/1*zflDDaWxGKw2Drgi_hreKg.jpeg)
+![20javascript shorthand techniques](/assets/20javascript%20shorthand%20techniques.jpeg)
 </br>
+
 프로그래밍 언어에서의 shorthand technique를 활용하면 더 간결하고 최적화된 코드를 작성할 수 있으며 코드 양을 줄여줄일 수 있다. Javascript에서의 `단축표기법(shorthand technique)`을 알아보자.
 
 </br>
@@ -315,7 +316,7 @@ const cloneObj = {...obj};
 
 역자 추가) nested object를 spread operator로 copy 하는 경우, 가장 상위 계층의 값만 deep copy 되고, nested object는 shallow copy된다.
 
-![](assets/2021-01-15-vue-950c95b0.png)
+![nest object deepcopy](/assets/2021-01-15-vue-950c95b0.png)
 최상위 계층에 있는 x는 copied에서 값을 바꿨을 때 obj의 값에는 영향을 주지 않았지만, nested object인 z값을 바꾸면 원본 Obj의 값도 바뀐다.
 
 

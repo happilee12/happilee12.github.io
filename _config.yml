@@ -16,11 +16,11 @@ minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt"
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Num123"
+title                    : "SW Engineer, Lee's Blog"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
-name                     : "Num123"
-description              : "An amazing website."
+name                     : "Lee (한리경)"
+description              : "SW Engineer, Lee's Blog"
 url                      : "https://happilee12.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -93,9 +93,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "Num123"
+  name             : "한리경"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Fullstack Software Developer @ SKTelecom."
+  bio              : "Software Developer @ SKTelecom."
   location         : "Seoul, Korea"
   email            :
   links:

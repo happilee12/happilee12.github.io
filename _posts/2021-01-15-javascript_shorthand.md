@@ -1,5 +1,5 @@
 ---
-title: "[Javascript] 간결하고 읽기쉬운 자바스크립트 코드를 만드는 20가지 단축표기법(Shorthand Technique)✨"
+title: "[Javascript][번역글] 간결하고 읽기쉬운 자바스크립트 코드를 만드는 20가지 단축표기법(Shorthand Technique)✨"
 date: 2021-01-15 00:00:00 -0400
 categories: javascript translation
 ---
@@ -99,7 +99,7 @@ isLoggedin && goToHomepage();
 ```
 <br>
 ### 6. 두 변수의 값 swap
-두 변수의 값을 사용할 때에도, array destructuring을 활용할 수 있다.
+두 변수의 값을 사용할 때에도 **array destructuring**을 활용할 수 있다.
 ```javascript
 let x = 'Hello', y = 55;
 //Longhand
@@ -112,7 +112,7 @@ y = temp;
 ```
 <br>
 ### 7. 화살표함수(Arrow Function)
-```JavaScript
+```javascript
 //Longhand
 function add(num1, num2) {
    return num1 + num2;
@@ -126,7 +126,7 @@ const add = (num1, num2) => num1 + num2;
 <br>
 ### 8. 템플릿 리터럴(Template literal)
 ES6부터는 템플릿 리터럴을 활용해서 문자열을 손쉽게 연결할 수 있다.
-``` JavaScript
+``` javascript
 //Longhand
 console.log('You got a missed call from ' + number + ' at ' + time);
 
@@ -147,7 +147,7 @@ console.log(`JavaScript, often abbreviated as JS, is a programming language that
 ```
 <br>
 ### 10. 여러 조건 확인
-여러개 중 하나의 값과 매칭하는지 여부를 볼 때, 매칭하는 값들을 array에 넣고 `indexOf()`나 `includes()`를 사용할 수 있다.
+여러개 중 하나의 값과 매칭되는지 여부를 볼 때, 매칭하는 값들을 array에 넣고 `indexOf()`나 `includes()`를 사용할 수 있다.
 ```javascript
 //Longhand
 if (value === 1 || value === 'one' || value === 2 || value === 'two') {
@@ -220,7 +220,8 @@ const power = 4**3; // 64
 ```
 <br>
 ### 15. `~~`를 활용한 반올림
-두개의 `~(NOT)` 비트연산자를 `Math.floor()`메소드 대신에 사용할 수 있다. 단, 32 비트 정수에만 유효하다.  (2**31)-1 = 2147483647보다 큰 수에는 비트 연산자 대신 Math.floor() 를 사용해야 한다.
+두개의 `~(NOT)` 비트연산자를 `Math.floor()`메소드 대신에 사용할 수 있다.
+단, 32 비트 정수에만 유효하다.  (2**31)-1 = 2147483647보다 큰 수에는 비트 연산자 대신 Math.floor() 를 사용해야 한다.
 ```javascript
 //Longhand
 const floor = Math.floor(6.8); // 6

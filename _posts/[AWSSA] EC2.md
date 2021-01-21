@@ -1,0 +1,758 @@
+---
+title: "[AWS] Software Architect Associate - Udemy강의 정리 (2)EC2"
+date: 2021-01-15 00:00:00 -0400
+categories: aws aws-certificate aws-sa udemy
+---
+>본 포스트는 AWS Solution Architect CERTIFICATE 준비 및 udemy 강의를 정리하며 작성하였습니다.
+**Udemy 강의** [https://www.udemy.com/course/aws-certified-solutions-architect-associate/](https://www.udemy.com/course/aws-certified-solutions-architect-associate/)
+**AWS Solution Architect Associate란?** [https://aws.amazon.com/ko/certification/certified-solutions-architect-associate/](https://aws.amazon.com/ko/certification/certified-solutions-architect-associate/)
+
+# 요약
+## 💡 새로 알게된 사실
+*
+
+## 🤔  처음 들을 때 햇갈렸던 부분
+*
+
+
+# 03. EC2
+
+## -1. EC2 101
+
+### Pricing
+
+1. On Demand - fixed rate by hour(or secs)
+   *  Ec2를 flexiable하게 사용하고 싶은 경우
+   * applications with shor term, spiky, unpredictable workload that cannot be interrupted
+   * EC2에서 처음으로 개발,테스트하는 application
+2. Reserved - 1 or 3년 계약으로 리소스 예약. 할인률 매우 큼
+   * steady하고 prdictable usage인 application에 적당
+   * reserved capacity가 필요한 경우
+   * Users able to make upfront payments to reduce their total computing costs even furter
+   * Types
+     * Standard Reserved instances. 75% off, 계약기간이 길수록 discout 커짐
+     * Convertiable Reserved Instances. 54% off. 인스턴스 타입 변경 허용
+     * Scheduled Reserved instances. Predictable recurring scheduling(day, week, month) ex. school service라서 9~6에만 사용량을 늘린다던가
+3. Spot - .. 주식처럼.. 특정 가격에 bidding하여 리소스 점유 :question:
+   * 시작/종료시간이 유동적인 Application
+   * 가격이 매우 저렴해야 할 때
+   * 급하게 대용량의 추가적인 컴퓨팅이 필요할 때
+4. Dedicated Hosts - physical EC2 server dedicated. :question:
+   * multi-tenet virtualization을 허용하지 않는 규제가 있는 경우
+   * multi-tenancy나 cloud 배포를 허용하지 않는 라이센스를 사용하는 경우 (Ex. 오라클)
+   * On-Demand로 hourly 구매 가능
+   * Reserved로 사면 70%까지 할인
+
+
+
+### Instance Types
+
+associate레벨에는 상세히 나오지는 않으니 참고만
+![image-20210118133630748.png](/assets/[AWSSA]EC2/image-20210118133630748.png)
+
+암기법(...)
+
+fight Dr. McPxz Au
+
+![image-20210118134019284](/assets/[AWSSA]EC2/image-20210118134019284.png)
+
+
+
+## -2. 실습
+
+### Lab - 1. 인스턴스 생성
+
+* Launch EC2
+* 1. AMI 선택 : Amazon Linux 2 AMI
+
+![image-20210118135321358](/assets/[AWSSA]EC2/image-20210118135321358.png)
+
+* 2. 인스턴스 선택 : t2.micro
+
+  ![image-20210118135835479](/assets/[AWSSA]EC2/image-20210118135835479.png)
+
+* 3. 세부 디테일 설정
+
+  * VPC : default
+  * Subnet : 어떤 AZ사용할지. - Random임.. 한 계정의 ap-northeast-2b 가 다른계정에서 보이는 ap-northeast-2b와 다른 AZ일 수 있음 :question:
+  * Capacity Reservation - 특정 AZ에서 인스턴스 예약
+  * Shutdown behavior - stop? terminate?
+  * Enable termination Protection - accitental termination 방지 (:star: default : turnned off)
+  * Cloud Watch - default : every 5 min
+  * Tenancy - shared/ dedicated/ dedicated host :question:
+
+  ![image-20210118140112312](/assets/[AWSSA]EC2/image-20210118140112312.png)
+
+* 4. 스토리지 추가
+
+  ![image-20210118141050180](/assets/[AWSSA]EC2/image-20210118141050180.png)
+
+  * 루트 스토리지(OS가 설치된 스토리지)는 선택지가 한정적
+    * Root Device Volume도 encrpt 가능함! :star:
+  * Add new volume하면 cold hdd 등 더 다양한 옵션이 있음
+  * 인스턴스 삭제 시 root는 자동 삭제, 다른 스토리지는 자동 삭제 X :star:
+
+* 5. 태그 추가
+
+  ![image-20210118141257962](/assets/[AWSSA]EC2/image-20210118141257962.png)
+
+* Security group :  virtual firewall
+
+  ![image-20210118141458665](/assets/[AWSSA]EC2/image-20210118141458665.png)
+
+  보안그룹 이름 설정. 허용하는 네트워크 등을 설정.
+
+
+
+* Create a new key pair
+
+  public key - padlock. 여기저기 공개해도 괜찮음
+
+  Private key - padlock을 여는 key
+
+  ![image-20210118141708857](/assets/[AWSSA]EC2/image-20210118141708857.png)
+
+
+
+
+
+### Lab - 02. SSH접속
+
+pem키가 있는 파일로 이동해서 권한 변경
+
+`CHMOD 400 MyUser1KP.pem`
+
+* CHMOD 400 : (U)ser / owner can read, can't write and can't execute. (G)roup can't read, can't write and can't execute. (O)thers can't read, can't write and can't execute.
+
+`Ssh ec2-user@[ip] -i MyUser1KP.pem`
+
+네트워크 자체에서 22포트를 막는 경우가 있음(공용도서관.. 사무실.. 등등). 집에서 하면 될 것
+
+`sudo su` #root 권한으로
+
+`yum update -y`
+
+
+
+### Lab - 03. 웹서버 띄우기
+
+`yum install http -y`
+
+```sh
+yum install http -y # EC2를 웹서버로 만들어줌. /var/www/html안에 있는 파일은 80포트로 접속 가능
+cd /var/www/html
+nano index.html
+# <html><h1>hello world </h1></html>
+service httpd start
+
+```
+
+퍼블릭 주소로 접근해보면 hello world 볼 수 있음
+
+![image-20210118143404755](/assets/[AWSSA]EC2/image-20210118143404755.png)
+
+
+
+
+
+##  -3. Security Group
+
+Ec2 > Network & Security > Security Groups
+
+![image-20210119090146848](/assets/[AWSSA]EC2/image-20210119090146848.png)
+
+
+
+* 모든 Inbound traffic은 기본적으로 blocked
+* 모든 Outbound Traffice은 허용됨
+* Security Group 규칙 수정하면 바로 적용됨  :star:
+* 하나의 Security Group에 여러개의 EC2 인스턴스를 가질 수 있음
+* EC2인스턴스는 여러 Security group에 붙을 수 있음
+
+* **Stateful**
+
+  * Inbound규칙을 바꾸면 Outbound는 자동으로 적용됨
+
+  * ex. outbound규칙을 다 삭제하면? 아무 일도 일어나지 않음.
+
+(<-> Network Access Control List 는 stateless)
+
+* 특정 IP를 block하려면 Network Access Control List에서 설정해줘야 함
+* allow rule은 가능, deny rule은 불가 (default : deny everything. allow some)
+
+
+
+
+
+## -4. EBS (Elastic Block Store)
+
+* EBS : 가상의 하드디스크. EC2 인스턴스에 사용할 수 있는 블록 수준 스토리지 볼륨을 제공
+
+
+
+### EBS Types
+
+* General Purpose SSD
+
+* Provisioned IOPS (가장 높은 사양)
+
+* Throughput Optimised Hard Disk Drive
+
+* Cold Hard Disk Drive
+
+* Magnetic
+
+  ![image-20210119091335991](/assets/[AWSSA]EC2/image-20210119091335991.png)
+
+
+
+EBS Volume size나 storage type을 변경 가능(on the fly - restart 하지 않아도 됨)
+
+
+
+자주 나오는 질문!
+
+### EBS의 AZ를 변경하고자 할 때는?
+
+#### **1. 스냅샷 -> AMI -> 새 Instance**
+
+**스냅샷** : photograph of disk
+
+* Incremental : 이전 snapshot에서 업데이트 된 부분만 저장
+* 처음으로 스냅샷을 만들면 시간이 좀 걸림
+* root 디바이스의 스냅샷을 찍을 때는 instance를 중지하고 진행하는게 best practice(하지만, running일 때에도 snapshot만들수는 있음)
+* Volume은 EC2 인스턴스와 같은 AZ에 생성됨
+* EC2 volume의 AZ를 변경하려면 snapshot -> AMI -> launch
+
+
+
+Create Image from EBS Snapshot
+
+![image-20210119103512620](/assets/[AWSSA]EC2/image-20210119103512620.png)
+
+* HVM  / PV
+  AMI에서 인스턴스를 시작하는 경우 반가상화(PV) 또는 하드웨어 가상 머신(HVM) 가상화를 사용합니다. HVM 가상화에는 AWS 플랫폼이 제공하는 하드웨어 보조 기술이 사용됩니다. HVM 가상화를 사용하는 경우 게스트 VM은 기본 하드웨어 플랫폼에 있는 것처럼 실행되지만, 성능 향상을 위해 여전히 PV 네트워크 및 스토리지 드라이버가 사용됩니다. PV와 HVM을 모두 지원하는 인스턴스 유형도 있지만 둘 중 하나만 지원하는 유형도 있습니다.
+
+-> AMI 로 가서 해당 image 선택
+
+ -> Launch Instance
+
+![image-20210119103609287](/assets/[AWSSA]EC2/image-20210119103609287.png)
+
+* 다른 AZ를 선택할 수도 있음
+
+![image-20210119103635746](/assets/[AWSSA]EC2/image-20210119103635746.png)
+
+
+
+#### 2. Copy AMI
+
+AZ뿐 아니라 Region간의 이동도 가능함!
+
+* EC2 volume의 region을 변경하려면 snapshot ->  AMI -> copy to another region -> launch
+
+![image-20210119103853346](/assets/[AWSSA]EC2/image-20210119103853346.png)
+
+
+
+### EBS vs Instance Store
+
+AMI 선택 시
+
+AMI의 Storage의 Root Device는 Instance Store(EPHEMERAL STORAGE)와 EBS Backed Volume 중 선택 가능
+
+EBS Volumes : AMI에서 시작하는 root device는 Amazon EBS Snapshot에서 생성된 Amazon EBS Volume
+
+Instance Store Volumes : AWS S3 template에서 생성하는 stor volume
+
+![image-20210119110120900](/assets/[AWSSA]EC2/image-20210119110120900.png)
+
+* 선택할 수 있는 Instance type이 제한됨
+
+![image-20210119110140558](/assets/[AWSSA]EC2/image-20210119110140558.png)
+
+* 인스턴스를 시작한 후 추가 EBS 볼륨은 추가연결 가능. But, 인스턴스 스토어 볼륨은 연결할 수 없음
+
+  ![image-20210119110236158](/assets/[AWSSA]EC2/image-20210119110236158.png)
+
+* 인스턴스 스토어 볼륨은 Volumes탭에서 확인이 안됨
+
+* Ephemeral(일시적인) Storage
+
+  * Stop불가함. Terminate만 가능. host가 멈추면 데이터가 사라짐
+  * Reboot는 가능. 데이터 손실 없음
+
+
+
+
+
+### ENI vs ENA vs EFA (senario questions) :question:
+
+* ENI : Elastic Network Interface - VPC에서 가상 네트워크 카드를 나타내는 논리적 네트워킹 구성 요소
+  * Management Network
+*  EN : Enhanced Networking. Single root I/O Virtualization (SR-IOV)
+  *  I/O 성능이 높음 - r
+  * lower CPU util
+  * 추가요금 없음
+  * 좋은 네트워크 성능이 필요할 때 사용
+  * 인스턴스 타입에 따라
+    * ENA - 최대 100gb/s
+    * VF - 최대 10gb/s .. older instances에 주로 이용됨
+    * 대부분의 scenario question에서 답은 ENA
+* Elastic Fabric Adapter
+  *  Amazon EC2 인스턴스에 붙여서 **HPC(High Perfomance Computing)**과 **machine learning** app을 가속화하는데 사용하는 네트워크 디바이스
+  * latency가 적고 throughput이 큼
+  * **OS 우회** 가능 - os 커널을 우회해서 EFA device와 직접 communicate -> faster & low latency. only Linux
+
+
+
+#### Exam Tips
+
+* ENI
+
+  : basic networking. 적은 비용으로 production네트워크와 분리된 management 네트워크나 logging 네트워크가 필요한 경우
+
+  => 각 네트워크에 여러 ENI사용
+
+* Enhanced Networking
+
+  : 10~100Gbps의 속도가 필요할 때. reliable, hight throuput이 필요할 때
+
+* Elastic Fabric Adaptor
+
+  : HPC(High Performance Computing)을 가속해야함. Machine Learning app이나 OS by-pass필요.
+
+
+
+### Encrypted Root Device Volumes & Snapshots - LAB
+
+Root Device Volume - OS가 올라가있는 HW
+
+어떻게 암호화해야 할지
+
+
+
+* VM 생성 시 Storage 를 Encrypt할 수 있음
+
+![image-20210119144002886](/assets/[AWSSA]EC2/image-20210119144002886.png)
+
+* Encrypt하지 않고 생성한 경우
+
+  1. snapshot생성
+
+  2. copy : Encryption설정에서 Encrypt활성화
+
+     ![image-20210119144311186](/assets/[AWSSA]EC2/image-20210119144311186.png)
+
+  3. AMI를 이 snapshot에서 생성
+  4. Launch Instance
+
+
+
+#### Exam Tips
+
+* encrypted volume -> 스냅샷 만들면 자동으로 암호화됨
+* encrypted snapshot -> restore한 volume은 자동으로 암호화됨
+* 암호화되지 않은 snapshot만 공유 가능 (다른 AWS계정 or Public)
+* EC2만드는 시점에서도 암호화가능
+* EC2만드는 시점에서 암호화 못했다면 : snapshot -> copy -> encrtpt -> launch instance
+
+
+
+
+
+## -5. Spot Instances & Spot Fleets
+
+#### Spot Instance
+
+남는 EC2자원을 활용하는 것. 최대 90% 할인
+
+*  flexibe한 application 에 활용하면 좋음(ex. 빅데이터, containerized workloads, CI/CD, 웹서버, HPC 등)
+
+* Persistent, critical, database에는 사용하면 안됨
+
+* Maximum Spot price를 정하고 그 가격을 넘으면 2분 내에 stop / terminate을 결정해야 함
+
+* **Spot block**을 사용하면 최대 가격 이상으로 올라가도 instance가 종료회지 않도록 할 수 있음
+
+* capacity와 region에 따라 매 시간 가격이 달라짐
+
+  ![image-20210120143415997](/assets/[AWSSA]EC2/image-20210120143415997.png)
+
+* Request type
+
+  * One-time: maximum가격 위로 올라가면 종료
+  * persistent : maximum가격 아래로 내려가면 다시 launch
+
+#### Spot Fleet
+
+여러 조합으로 인스턴스+On Demand 인스턴스 + 최대가격을 정의현재 이용 가능한 것들이 명시한 최대 가격보다 적을 경우에 fulfilled
+
+* 가격제한 안에서 target capacity를 맞추려고 try
+  * EC2, OS, AZ eㅡㅇ등을 조합하여 여러 Laucn peel을 설정
+  * fleet이 그 중에거 최적인 걸로 고름
+  * 정해놓은 가격 제한을 넘으면 인스턴스는 멈춤
+
+
+
+## -6. EC2 Hibernate
+
+EC2 인스턴스를 Hibernate하면 : RAM의 컨텐츠 -> EBS root volume에 저장
+
+Hibernation이 끝나면, EBS root volume복구 & RAM 컨텐츠 리로드 &이전에 수행중이던 프로세스 resume (돌고있던 mysql.. 등)
+
+* 이전에 붙어있던 data volume이 다시 attach되며 **인스턴스ID값 유지**
+* => 훨씬 빨리 boot
+* 오래걸리는 프로세스나 initialize하는데 오래걸리는 서비스에 유용함
+* EC2만드는 단계에서 Stop - Hibernate behavior를 활성화하면 됨. Hibernate를 활성화하려면 Root volume은 Encrypt되어있어야 함
+
+
+
+#### Exam Tips
+
+* **OS 를 리로드하지 않아도 되기 때문에 부팅 시간이 훨씬 빠름**
+* Instance Ram 150기가 이하
+* Instance families - C, M, R 3~5
+* 윈도우, Amazion Linux2 AMi, Ubuntu에서 가능
+* 60일 이상 hibernate될 수는 없음
+* On-demand & Reserved 인스턴스에서 사용 가능
+
+
+
+## -7 Cloud Watch 101
+
+퍼포먼스를 **모니터링**
+
+* Compute : EC2, Autoscaling Groups, Elastic Load Balancer, Route53 Health Checks
+  * EC2에서는 디폴트로 5분단위로 모니터링. 1분단위로 바꿀 수 있음
+  * trigger notification
+* Storage & Content Delivery : EBS Volumes, Storage Gateways, CloudFront
+
+<->  CloudTrail : **감시** CCTV - AWS플랫폼 내의 API호출을 모니터링
+
+### 하위메뉴
+
+* Dashboards -
+* Alerms - 특정 한계값에 닿으면 알람
+* Events - AWS 리소스의 변화에 대응할 수 있도록
+* Logs - aggregatem, monitor, store logs
+
+
+
+### LAB
+
+* 인스턴스 생성
+
+detailed monitoring - 1분단위. free tier 아님
+
+![image-20210120160738728](/assets/[AWSSA]EC2/image-20210120160738728.png)
+
+
+
+* 알람 생성
+
+  Management & Government > Cloudwatch > Alarm > Create an alerm
+
+  CPU Utilization >= 90 일때로 알람을 생성
+
+![image-20210120161159529](/assets/[AWSSA]EC2/image-20210120161159529.png)
+
+
+
+* 테스트
+
+ ```
+$ ssh ec2-user@3.35.16.175 -i MyUSE1KP.pem  // EC2 접속
+[ec2-user@ip-172-31-38-83 ~]$ sudo su // root mode
+[ec2-user@ip-172-31-38-83 ~]$ while true; do echo; done; // 무한루프
+ ```
+
+![image-20210120162556208](/assets/[AWSSA]EC2/image-20210120162556208.png)
+
+알람 메일
+
+
+
+## -8. AWS Command Line & IAM
+
+### AWS Command Line에 user Id/key추가
+
+IAM 설정(유저에 Programatic Access 추가 )하면 CLI에서 aws리소스를 관리할 수 있음
+
+![image-20210120163849381](/assets/[AWSSA]EC2/image-20210120163849381.png)
+
+CLI에서 `aws configure`입력 후  Access key id와 Secret Access Key 입력하면 AWS리소스에 접근 가능
+
+
+
+###  IAM Roles을 이용
+
+1. IAM만들기 - EC2, Administor Access
+
+![image-20210120164718660](/assets/[AWSSA]EC2/image-20210120164718660.png)
+
+![image-20210120164750977](/assets/[AWSSA]EC2/image-20210120164750977.png)
+
+2. EC2에 IAM Role attach
+
+   ![image-20210120165115970](/assets/[AWSSA]EC2/image-20210120165115970.png)
+
+   ![image-20210120165141167](/assets/[AWSSA]EC2/image-20210120165141167.png)
+
+3. 인스턴스에 IAM Role 이 추가된 것이 확인 가능
+
+   ![image-20210120165252696](/assets/[AWSSA]EC2/image-20210120165252696.png)
+
+   ![image-20210120165326019](/assets/[AWSSA]EC2/image-20210120165326019.png)
+
+
+
+4. EC2 콘솔에서  `aws s3 ls` 해보면 리소스 접근 가능
+
+   ![image-20210120165420024](/assets/[AWSSA]EC2/image-20210120165420024.png)
+
+
+
+#### Exam Tips
+
+* Role을 주는 것이 EC2에 access key 를 주는것보다 훨씬 안전함
+* Role이 더 관리하기 쉬움
+* Role 생성 후 command line이나 console을 통해서 EC2 인스턴스에 접근 가능
+* Role은 universla(region에 관계 없음)
+
+
+
+
+
+## -9. EC2 시작 스크립트 추가
+
+인스턴스 생성 시
+
+* IAM에 AdminAccess추가
+
+  ![image-20210120170427986](/assets/[AWSSA]EC2/image-20210120170427986.png)
+
+* 고급 세부 정보 부분에 시작 Bash Script추가
+
+![image-20210120170301662](/assets/[AWSSA]EC2/image-20210120170301662.png)
+
+Bash Scripting
+
+```sh
+#!/bin/bash
+yum update -y
+yum install httpd -y
+service httpd start
+chkconfig cttpd on
+cd /var/www/html
+echo "<html><h1>hiiiii </h1></html>" > index.html
+aws s3 mb s3://asdlfjalkjdljflkasdjflkas
+aws s3 cp index.html s3://asdlfjalkjdljflkasdjflkas
+```
+
+
+
+인스턴스 생성 후 public주소로 접속해보면
+
+
+
+![image-20210120171159738](/assets/[AWSSA]EC2/image-20210120171159738.png)페이지 떠있는것 확인 가능!
+
+
+
+## -10. Instance Meta Data
+
+ssh접속해서 명령어를 통해 bootstrap code나 기타 인스턴스 정보를 확인할 수 있음
+
+이를 Bootstrap코드에 넣어서, 인스턴스 시작되면 퍼블릭ip를 알람으로 보내거나 db에 저장하는 등 활용할 수 있음
+
+```sh
+[ec2-user@ip-172-31-47-46 ~]$ curl http://169.254.169.254/latest/user-data / bootstrap code
+#!/bin/bash
+yum update -y
+yum install httpd -y
+service httpd start
+chkconfig httpd on
+cd /var/www/html
+echo "<html><h1>hiiiii </h1></html>" > index.html
+aws s3 mb s3://sixvlkxclkwixksnkaljsv /
+
+```
+
+```sh
+curl http://169.254.169.254/latest/meta-data // 볼 수 있는 옵션들
+ami-id
+ami-launch-index
+ami-manifest-path
+block-device-mapping/
+events/
+hibernation/
+hostname
+iam/
+identity-credentials/
+instance-action
+instance-id
+instance-life-cycle
+instance-type
+local-hostname
+local-ipv4
+mac
+metrics/
+network/
+placement/
+profile
+public-hostname
+public-ipv4
+public-keys/
+reservation-id
+security-groups
+[ec2-user@ip-172-31-47-46 ~]$ curl http://169.254.169.254/latest/meta-data/public-ipv4
+3.35.49.36[ec2-user@ip-172-31-47-46 ~]$ curl http://169.254.169.254/latest/meta-data/public-ipv4 > myip.txt
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    10  100    10    0     0   2000      0 --:--:-- --:--:-- --:--:--  2000
+[ec2-user@ip-172-31-47-46 ~]$ ls
+myip.txt
+[ec2-user@ip-172-31-47-46 ~]$
+
+```
+
+
+
+## -11. 파일 스토리지 서비스
+
+:question: 이것들과 S3의 차이는? S3는 distributed object based storage; not a file system
+
+### EFS
+
+여러 EC2 인스턴스에서 사용될 수 있는 NFS기반 파일 시스템
+
+Linux instance, Linux-based app을 위한 분산된 & 고가용성 스토리지
+
+* NFSv4 프로토콜 (NFS: 네트워크 상의 파일을 직접 연결된 스토리지에 접근하는 방식과 비슷한 방식으로 접근하게 해줌 )
+* 스토리지 사용하는 만큼 돈을 냄(pre-provisioning 불필요)
+* 페타바이트 단위로 scale up
+* 수천개의 NFS 커넥션을 동시에 가질 수 있음
+* 리전 내에서 여러 AZ에 걸쳐 데이터가 저장됨
+* Read after Write Consistency
+
+
+
+### Windows FSx
+
+* SMB(서버 메시지 블록)프로토콜 기반
+* 중앙화된 스토리지
+* Windows-based application.
+* AD User, Access Control lists, groups and security policies 지원
+
+
+
+### Lustre FSx
+
+* Compute-intensive work에 최적화된 파일시스템 (ex. big data, HPC, video processing ..)
+* sub-millisecond단위 접근 및 초당 수백기가바이트의 처리량을 지원
+
+
+
+## -12. EC2 Placement Groups
+
+새 EC2 인스턴스를 시작하면 EC2 서비스는 모든 인스턴스가 기본 하드웨어 전반에 분산되도록 하여 상호 관련 오류의 위험을 줄입니다. 그러나 *배치 그룹*을 사용하면 워크로드의 요구 사항을 충족하도록 하는 *독립적* 인스턴스의 그룹의 배치에 영향을 줄 수 있습니다.
+
+### types
+
+* Clustered Placement Group
+  * **하나의 AZ**에 매우 가까이 위치
+  * **low latency, high throughput** -> HPC
+
+* Spread Placement Group
+
+  * 각각 고유한 랙에 배치된 인스턴스 그룹
+
+  * clustered의 반대
+
+  * **Individual Ciritical EC2 instances**
+
+    ![image-20210121105018745](/assets/[AWSSA]EC2/image-20210121105018745.png)
+
+* Partitioned Placement Group
+
+  * 각 그룹을 partition이라는 논리 세그먼트로 나눔
+
+  * 각 partition은 rack, network, power source 등이 분리됨 (기본 하드웨어를 공유하지 않음)
+
+  * **Multiple EC2 instances HDFS, HBase, Cassandra**  
+
+    ![image-20210121105000766](/assets/[AWSSA]EC2/image-20210121105000766.png)
+
+:question: spread랑 partition이랑 어떻게 다르다구? partition 안에 여러 instance
+
+
+
+### features
+
+* Placement group의 이름은 AWS account내에서 unique해야함
+
+* 하나의 placement group 내에서는 특정 타입의 instances 만 launch될 수 있음
+
+* 하나의 clustered placement group 내애는 homogeneous instance 권장
+
+* 두 placement group을 합칠수는 없음
+
+* 기존의 인스턴스를 Placement group 내로 옮길 수 있음. (옮기기 전에 stop해야 함)
+
+
+
+## -13. HPC on AWS
+
+#### Data Transfer
+
+* Snowball, Snowmobile(terabytes/petabytes)
+* AWS DataSync
+* Direct Connect
+  : Dedicated network from on-premise to AWS
+
+#### Compute & Networking
+
+* EC2 instannce (GPU, CPU optimized)
+* EC2 fleets(Spot Instances or Spot Fleets)
+* Placement groups(Cluster placement groups)
+* Ennhanced Nnetworking signle root i/o virtualization(SR-IOV :question: )
+* Elastic Network Adapters or VF interface
+* Elastic Fabric Adapters
+
+#### Storage
+
+* Isntance-sttached
+  * EBS
+  * Instance Store
+* Network Storage
+  * Amazon S3
+  * Amazon EFS
+  * Amazon FSx for Lustre
+
+#### Orchestration & Automation
+
+* Aws Batch
+* AWS ParallelCluster
+
+
+
+## -14. AWS WAF
+
+WAF : web application firewall. Monitor HTTP, HTTPS requestes forwaredd to cloudfront, load balencer, or API Gateway
+
+기본적으로 3개의 behavior를 가짐
+
+1. 명시하는 것 외에 모두 허용
+2. 명시하는 것 외에 모두 차단
+3. 명시한 성질을 가진 request를 count
+
+그 외에도,
+
+* 특정 ip (ACL을 사용해도 특정 IP block 가능)
+* 특정 국가
+* Request header에 특정 값
+* request의 특정 string
+* request길이
+* SQL injection 포함 여부
+* 악의적 스크립트 포함 여부

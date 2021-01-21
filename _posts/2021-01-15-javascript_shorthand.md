@@ -1,5 +1,5 @@
 ---
-title: "[Javascript][번역글] 간결하고 읽기쉬운 자바스크립트 코드를 만드는 20가지 단축표기법(Shorthand Technique)✨"
+title: "[Javascript][번역글] 간결하고 가독성 높은 자바스크립트 코드를 만드는 20가지 단축표기법(Shorthand Technique)✨"
 date: 2021-01-15 00:00:00 -0400
 categories: javascript translation
 ---
@@ -23,7 +23,7 @@ const cloneObj = {...obj};`
 ![20javascript shorthand techniques](/assets/20javascript%20shorthand%20techniques.jpeg)
 
 
-프로그래밍 언어에서의 shorthand technique를 활용하면 더 간결하고 최적화된 코드를 작성할 수 있으며 코드 양을 줄여줄일 수 있다. Javascript에서의 `단축표기법(shorthand technique)`을 알아보자.
+`단축표기법(shorthand technique)`을 활용하면 간결하고 최적화된 코드를 작성할 수 있으며 코드 양을 줄여줄일 수 있다. Javascript에서의 `단축표기법(shorthand technique)`을 알아보자.
 
 
 <br>
@@ -221,7 +221,7 @@ const power = 4**3; // 64
 <br>
 ### 15. `~~`를 활용한 반올림
 두개의 `~(NOT)` 비트연산자를 `Math.floor()`메소드 대신에 사용할 수 있다.
-단, 32 비트 정수에만 유효하다.  (2**31)-1 = 2147483647보다 큰 수에는 비트 연산자 대신 Math.floor() 를 사용해야 한다.
+단, 32 비트 정수에만 유효하다.  (2**31)-1 = 2147483647보다 큰 수에는 `Math.floor()`를 사용해야 한다.
 ```javascript
 //Longhand
 const floor = Math.floor(6.8); // 6
@@ -254,10 +254,15 @@ for (let i = 0; i < arr.length; i++) {
 //for of loop
 for (const val of arr) {
   console.log(val);
+  // 10, 20, 30, 40
 }
 //for in loop
 for (const index in arr) {
   console.log(`index: ${index} and value: ${arr[index]}`);
+  // index: 0 and value: 10
+  // index: 1 and value: 20
+  // index: 2 and value: 30
+  // index: 3 and value: 40
 }
 ```
 
@@ -285,9 +290,9 @@ let arr2 = [...arr1, 60, 80];
 ### 19. 객체의 deep cloning (깊은 복사)
 여러 계층짜리 객체를 깊은복사 할때에 각 프로퍼티를 돌며 각 프로퍼티가 객체를 포함하는지 확인하고, 객체를 포함한다면 재귀적 호출을 통해 현재 값을 전달하며 값을 복사할 수 있다.
 
-만약 복사하려는 객체가 함수, undefined, NaN, Date 등을 값으로 갖지 않는다면, `JSON.parse()`와 `JSON.stringify()`를 활용해서 복사하는 방법도 있다.
+만약 복사하려는 객체가 함수, `undefined`, `NaN`, `Date` 등을 값으로 갖지 않는다면, `JSON.parse()`와 `JSON.stringify()`를 활용해서 복사하는 방법도 있다.
 
-또 한 층짜리 객체일 경우엔(nested object가 없을 경우), spread operator(`...`)를 통해 deep clone을 할 수도 있다.
+또 한 층짜리 객체일 경우(nested object가 없을 경우), spread operator(`...`)를 통해 deep clone을 할 수도 있다.
 
 ```javascript
 let obj = {x: 20, y: {z: 30}};

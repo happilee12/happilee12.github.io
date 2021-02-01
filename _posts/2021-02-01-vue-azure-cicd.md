@@ -89,9 +89,7 @@ Vue Create을 통해 생성하였고, 설정은 Vue3 Default로하였습니다.
 <img src="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureappservice/0.20.0/1604973785944/Microsoft.VisualStudio.Services.Icons.Default" alt="image" style="zoom:50%;" />
 
 
-해당 프로젝트를 띄울 azure app service를 만들어줍니다.
-
-어떤 구성으로 azure app service를 만드는지는 크게 중요하지 않지만, 저는 아래와 같이 만들었으니 참고해주세요
+해당 프로젝트를 띄울 azure app service를 만들어줍니다. Vue 프로젝트를 띄울 앱서비스이기 때문에 Runtime stack은 Node로, OS는 Linux로 설정해주세요. 저는 아래와 같이 만들었으니 참고해주세요
 
 ```
 Name : 202101testapp
@@ -175,8 +173,8 @@ remote git과 username, password를 local project에 설정해주고, **해당 r
 1에서만든 vue 프로젝트에 deployment center의 remote git 정보를 연결해 줍니다.
 
 ```
-git remote add azure [remote git url] // 새로운 remote git url을 azure라는 이름으로 추가
-git push azure master // azure의 master브렌치로 푸시
+$ git remote add azure [remote git url] // 새로운 remote git url을 azure라는 이름으로 추가
+$ git push azure master // azure의 master브렌치로 푸시
 // (초기1회) username과 password 설정
 Username for 'https://202101testapp.scm.azurewebsites.net:443': [Username]
 Password for 'https://$202101testapp@202101testapp.scm.azurewebsites.net:443': [Password]
@@ -184,10 +182,8 @@ Password for 'https://$202101testapp@202101testapp.scm.azurewebsites.net:443': [
 
 
 
-(디플로이 진행중인 화면)
-
 ![image-20210201092738987](/assets/2021-02-01-vue-azure-cicd/image-20210201092738987.png)
-
+(디플로이 진행 화면)
 
 
 디플로이가 완료된 후 아까 Deployment Center를 들어가보면 디플로이 상태가 업데이트 되어있습니다.

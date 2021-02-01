@@ -1,4 +1,8 @@
-
+---
+title: "Azure App Service에 Vue프로젝트 CICD 설정"
+date: 2021-02-01 00:00:00 -0400
+categories: azure app-service vue cicd
+---
 
 ### 🧑‍🏫 이런 분들이 읽으면 도움이 되는 글입니다
 
@@ -11,7 +15,7 @@
 ###  📝 요약하자면 이런 내용입니다
 
 * Deployment Center를 local git로 설정하고, 프로젝트의 remote git에 추가하면 된다
-* startup command는 ` pm2 serve /home/site/wwwroot/build --no-daemon`  로 설정해야 한다
+* startup command는 `pm2 serve /home/site/wwwroot/build --no-daemon`  로 설정해야 한다
 
 
 
@@ -21,7 +25,7 @@
 
 이번 포스트에서는 **Azure App Service**의 **Deployment Center** 콘솔에서 **local git**과 **kudu** 통해  **Vue.js** 프로젝트의 **CI/CD(Continuous Deploymenet)** 설정을 해보겠습니다.
 
-
+<br>
 
 Azure App Service 디플로이에 대해서는 MS에서 여러 도큐먼트가 제공되고 있습니다.
 
@@ -39,9 +43,7 @@ Azure App Service 디플로이에 대해서는 MS에서 여러 도큐먼트가 �
 
 
 
-참고로,
-
-Azure Pipeline이나 github, bitbucket을 연동하실 수 있는 상황이면 아래 (1)을,
+참고로, Azure Pipeline이나 github, bitbucket을 연동하실 수 있는 상황이면 아래 (1)을,
 Node앱을 배포하고 VS Code를 사용할 수 있으면 (2) 를 따라하시면 됩니다.
 
 > Azure에서 제공되는 Azure App Service Deploy관련 Documnets
@@ -87,8 +89,7 @@ Vue Create을 통해 생성하였고, 설정은 Vue3 Default로하였습니다.
 <img src="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureappservice/0.20.0/1604973785944/Microsoft.VisualStudio.Services.Icons.Default" alt="image" style="zoom:50%;" />
 
 
-
-먼저 azure app service 리소스를 만들어줍니다.
+해당 프로젝트를 띄울 azure app service를 만들어줍니다.
 
 어떤 구성으로 azure app service를 만드는지는 크게 중요하지 않지만, 저는 아래와 같이 만들었으니 참고해주세요
 

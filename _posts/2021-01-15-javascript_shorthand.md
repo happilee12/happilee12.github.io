@@ -5,7 +5,7 @@ categories: javascript translation
 ---
 
 
-> 이 포스트는 다음 포스트를 한글로 번역하여 작성하였습니다.
+> 이 포스트는 다음 포스트를 한글로 번역하여 작성하였습니다.<br>
 원글 : [https://medium.com/javascript-in-plain-english/20-javascript-shorthand-techniques-that-will-save-your-time-f1671aab405f](https://medium.com/javascript-in-plain-english/20-javascript-shorthand-techniques-that-will-save-your-time-f1671aab405f)
 
 ### ⚡ 알게될 내용

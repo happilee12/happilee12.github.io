@@ -1,5 +1,5 @@
 ---
-title: "Azure App Service에 Vue프로젝트 CICD 설정"
+title: "[Azure] Azure App Service에 Vue프로젝트 CICD 설정"
 date: 2021-02-01 00:00:00 -0400
 categories: azure app-service vue cicd
 ---
@@ -89,7 +89,7 @@ Vue Create을 통해 생성하였고, 설정은 Vue3 Default로하였습니다.
 <img src="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureappservice/0.20.0/1604973785944/Microsoft.VisualStudio.Services.Icons.Default" alt="image" style="zoom:50%;" />
 
 
-해당 프로젝트를 띄울 azure app service를 만들어줍니다. Vue 프로젝트를 띄울 앱서비스이기 때문에 Runtime stack은 Node로, OS는 Linux로 설정해주세요. 저는 아래와 같이 만들었으니 참고해주세요
+해당 프로젝트를 띄울 azure app service를 만들어줍니다. Vue 프로젝트를 띄울 앱서비스이기 때문에 Runtime stack은 Node로, OS는 Linux로 설정해주세요. 저는 아래와 같이 만들었습니다.
 
 ```
 Name : 202101testapp
@@ -103,9 +103,6 @@ Application Insights : Not enabled
 
 
 ## 3. local git 설정을 위한 KUDU정보 복사
-
-app service의 왼쪽 패널 중 Deployment Center를 들어가보면 어떤 방식으로 디플로이 할지 선택할 수 있습니다.
-
 
 
 #### 01. Source Control - local git
@@ -205,6 +202,7 @@ STATUS에 Success라고 잘 떠있죠? ✌️
  Configuration > General settings > StartupCommand 쪽에 아래 command를 입력해줍니다.
 
  `pm2 serve /home/site/wwwroot/dist --no-daemon` 라고 입력해줍니다.
+ (pwa인 경우 `pm2 serve /home/site/wwwroot/dist --no-daemon --pwa` )
 
 참고) https://azureossd.github.io/2020/04/30/run-production-build-on-app-service-linux/
 
@@ -240,3 +238,6 @@ $ git commit -m "changed msg"
 $ git push azure master
 Enumerating objects: 7, done. (...)
 ```
+
+디플로이 완료 후 URL에 접속해보면 메시지가 바뀌어있습니다.
+![](assets/2021-02-01-vue-azure-cicd-49ad0b7c.png)
